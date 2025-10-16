@@ -323,7 +323,6 @@ The default toggle key to switch between headset and mouse/keyboard control is <
 :::warning NOTE
 
 - If you go back into vr and the game doesn't load in the headset either:
-
   - Press the <kbd>G</kbd> key until the headset displays the game  
     **==OR==**
   - Quit the game, remove the launch option, and relaunch the game.
