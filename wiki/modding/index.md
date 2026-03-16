@@ -19,12 +19,7 @@ Visit the [PC Mod Development](./pc/index.md) page to begin.
 
 ## Quest Mod Development
 
-The following guide covers most of the concepts you will need for creating mods for the Quest. This includes but is not
-limited to:
+The following guide covers the tools and concepts needed to create mods for the standalone Quest version of the game,
+including setup, hooks, configuration, UI, and more.
 
-- Hooking
-- Configuration using `config-utils`
-- User Interfaces using `bsml`
-- Custom types
-
-Visit the [Quest Mod Development Intro](./quest/intro.md) page for more information on getting started!
+Visit the [Quest Mod Development](./quest/intro.md) page to get started.
