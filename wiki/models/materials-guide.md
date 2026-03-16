@@ -166,6 +166,7 @@ Make sure to add an audio listener component to the `AudioLinkAvatar` gameObject
 you click play in Unity, your audio should start playing.
 
 - Audio Link Settings
+
   - Diffuse Texture Animation: This will make the texture rotate based on the audio band
     settings.
   - Color Flashing: This will make your material flash based on the audio band settings
@@ -199,6 +200,7 @@ you click play in Unity, your audio should start playing.
     <YouTube url='https://youtu.be/6Hx4BRGb6hM' />
 
   Song used in the video: Overthrone (Metal Version) - [longestsoloever](https://www.youtube.com/@longestsoloever)
+
   - Object Rotation: This will change the objects rotation based on the audio band
     settings.
 

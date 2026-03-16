@@ -400,6 +400,7 @@ There can be many hidden "gochas" when warping a song. Here are some things you 
 
 - Some Peaks can be vague, especially when there are several sounds happening at once.
   There are a couple of ways to test a peak to find where the drum hit is.
+
   - By dragging the cursor back and forth over the peak, you should hear a thump as you hit the peak.
   - If you click just before the peak, then hit spacebar to play the audio, you should instantly hear the drum hit.  
     ![Vague Peak](/.assets/images/mapping/reaperVaguePeak.png)

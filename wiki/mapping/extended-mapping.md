@@ -205,6 +205,7 @@ are often accomplished through the use of scripting tools like [BeatWalls](#wall
 There currently are two categories of wall maps.
 
 - **Atmospheric Walls:** Walls create an ambience to fit with the mood of the song
+
   - **Air (Mr FijiWiji Remix)** - Hellberg & Teqq ft. Taylr Renee mapped by Gevarred  
     [YouTube](https://www.youtube.com/watch?v=V-KFAdSjeKo) | [BeatSaver](https://beatsaver.com/beatmap/67ba)
   - **Cyberdemon** - Mick Gordon mapped by CyanSnow  
