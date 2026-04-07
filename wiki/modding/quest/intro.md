@@ -37,7 +37,7 @@ due to better property support and easier setup with the build systems used.
 The following pieces of software are needed to follow this guide.
 
 - [QPM](#qpm) - Dependency management
-- [Powershell](#powershell) - Cross-platform utility scripts
+- [Python](#python) - Cross-platform utility scripts
 - [CMake](#cmake) - Build system
 - [Ninja](#ninja) - Build tool
 - [Android NDK](#android-ndk) - Native Development Kit for Android
@@ -47,10 +47,12 @@ The following pieces of software are needed to follow this guide.
 [Download the latest QPM binary for your system](https://github.com/QuestPackageManager/QPM.CLI/releases/latest), extract
 `qpm.exe`, and add it to your `PATH` variable. Alternatively, download and run the Windows installer.
 
-### Powershell
+### Python
 
-[Download the latest Powershell binary for your system](https://github.com/PowerShell/PowerShell/releases/latest) and add
-it to your `PATH` variable. Alternatively, download and run the Windows installer.
+[Download the latest Python version for your system](https://www.python.org/downloads/) and run the installer. Make sure to
+select the option to add Python to `PATH`.
+
+If you already have Python, it will likely work, but at least version 3.8 is required.
 
 ### CMake
 
