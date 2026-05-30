@@ -100,6 +100,7 @@ fully initializing the project.
 In a terminal in the project directory, run:
 
 ```sh
+qpm ndk resolve
 qpm restore
 ```
 

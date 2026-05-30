@@ -123,7 +123,7 @@ on the headset every time you make a change in QRUE.
 Utilities to setup an emulator are included in QPM. To start, run this command to install the Android SDK and emulator:
 
 ```sh
-qpm emu setup --install-sdk --install-emulator
+qpm emu setup
 ```
 
 If you already have the SDK installed but not the emulator, you can add `--sdk-manager-path <sdk manager root>`, or set
@@ -149,11 +149,17 @@ By default, the AVD (Android Virtual Device) will be created in `~/.android/avd`
 `ANDROID_AVD_HOME` environment variable to the containing folder.
 :::
 
-Finally, you need to start the emulator to install the necessary apps.
+Finally, you need to start the emulator to install the necessary apps. Note that this will continue running in whatever
+terminal you run it in.
 
 ```sh
 qpm emu start --name <emulator name>
 ```
+
+::: tip
+If you forget what your emulator is named, you can run `<sdk manager root>/emulator/emulator -list-avds` or check the AVD
+folder mentioned above.
+:::
 
 ### Modding
 
