@@ -150,56 +150,10 @@ hooked method belongs to. However, when hooking static methods, the self pointer
 no instance associated with the call.
 :::
 
-### Auto Hooks
-
-<!-- TODO actually make hooking package -->
-
-To avoid having to remember to install every hook you make, and put them in the same file, a simple wrapper dependency can
-be added to your project by running `qpm dependency add meta-hooks`. Make sure to restore after adding the dependency.
-
-To use it, include its header file in the file you want to create your hook, then simply replace the `MAKE_HOOK_MATCH` macro
-with `MAKE_AUTO_HOOK_MATCH`.
-
-```cpp
-// Include the header file from the dependency.
-// You still need to include everything you use from bs-cordl.
-#include "meta-hooks/shared/hooks.hpp"
-
-// Change MAKE_HOOK_MATCH to MAKE_AUTO_HOOK_MATCH.
-MAKE_AUTO_HOOK_MATCH(
-    StandardLevelDetailViewController_DidActivate,
-    &GlobalNamespace::StandardLevelDetailViewController::DidActivate,
-    void,
-    GlobalNamespace::StandardLevelDetailViewController* self,
-    bool firstActivation,
-    bool addedToHierarchy,
-    bool screenSystemEnabling
-) {
-    // Unchanged from the example.
-}
-```
-
-Next, in `main.cpp`, you'll also need to include the header file, and then replace your individual hook installs in `load`
-or `late_load` with a single function.
-
-```cpp
-#include "meta-hooks/shared/hooks.hpp"
-
-extern "C" void late_load() {
-    il2cpp_functions::Init();
-
-    logger.info("Installing hooks...");
-    Hooks::Install();
-    logger.info("Installed all hooks!");
-}
-```
-
-Now, any hook you make with `MAKE_AUTO_HOOK_MATCH` will automatically be installed.
-
 ### Orig Hooks
 
-While browsing other mods' source code, you may encounter `MAKE_AUTO_ORIG_HOOK_MATCH` or `INSTALL_HOOK_ORIG`. These are
-called orig hooks, and they are used whenever the hook will always replace the original method instead of running it.
+While browsing other mods' source code, you may encounter `INSTALL_HOOK_ORIG`. These are called orig hooks, and they
+are used whenever the hook will always replace the original method instead of running it.
 
 You aren't required to use these when overriding a method with a hook, but they are useful to help ensure multiple mods
 aren't trying to override the same method.
