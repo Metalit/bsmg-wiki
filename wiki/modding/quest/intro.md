@@ -49,8 +49,8 @@ The following pieces of software are needed to follow this guide.
 
 ### Python
 
-[Download the latest Python version for your system](https://www.python.org/downloads/) and run the installer. Make sure to
-select the option to add Python to `PATH`.
+[Download the latest Python version for your system](https://www.python.org/downloads/) and run the installer. Make sure
+to select the option to add Python to `PATH`.
 
 If you already have Python, it will likely work, but at least version 3.8 is required.
 
