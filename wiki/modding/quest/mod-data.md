@@ -119,8 +119,8 @@ file managers.
 `config-utils`, as covered in the [last page](./configs-ui.md), will handle reading and writing to the config file path
 for you. If you need to access the path yourself anyway, you can use `get_config_path` with your mod info or mod ID.
 
-To access the data directory, the function `get_data_dir` will use your mod info or mod ID to generate the path for your mod.
-It will not create the directory for you, so you may need to check if it exists.
+To access the data directory, the function `get_data_dir` will use your mod info or mod ID to generate the path for your
+mod. It will not create the directory for you, so you may need to check if it exists.
 
 ```cpp
 #include "beatsaber-hook/shared/utils.hpp"

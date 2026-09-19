@@ -65,9 +65,10 @@ void UseArrayLater() {
 }
 ```
 
-As mentioned, Unity objects do not use the GC, and therefore cannot be used the same way in a `safe_ptr`. However, there is a
-subtlety that allows the type to be somewhat useful. _`safe_ptr`s do not prevent Unity objects from being destroyed._ Instead,
-all they do is keep specifically the C# wrapper of the Unity object alive, allowing you to do null checks on it safely.
+As mentioned, Unity objects do not use the GC, and therefore cannot be used the same way in a `safe_ptr`. However, there
+is a subtlety that allows the type to be somewhat useful. _`safe_ptr`s do not prevent Unity objects from being destroyed._
+Instead, all they do is keep specifically the C# wrapper of the Unity object alive, allowing you to do null checks on it
+safely.
 
 ```cpp
 safe_ptr<UnityEngine::GameObject*> toggleObject;
