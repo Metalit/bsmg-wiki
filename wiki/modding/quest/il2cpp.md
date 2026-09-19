@@ -44,31 +44,33 @@ workarounds that should be considered first:
 
 ### SafePtr Types
 
-A `SafePtr` is a wrapper type that provides a reference to an object to the GC. Effectively, using a `SafePtr` allows you
+A `safe_ptr` is a wrapper type that provides a reference to an object to the GC. Effectively, using a `safe_ptr` allows you
 to store and keep around a C# object for as long as you want.
 
 ```cpp
-SafePtr<Array<int>> cSharpArray;
+#include "beatsaber-hook/shared/arrayw.hpp"
+#include "beatsaber-hook/shared/safeptr.hpp"
+
+safe_ptr<ArrayW<int>> cSharpArray;
 
 void GetArray() {
-    // SafePtr requires a pointer type, so ArrayW can't be used directly in it
-    cSharpArray = (Array<int>*) ArrayW<int>({1, 2, 3, 4});
+    cSharpArray = ArrayW<int>({1, 2, 3, 4});
 }
 
 void UseArrayLater() {
-    // We can access the raw pointer again with ptr(), or call methods with -> like normal
-    logger.info("Array length: {}", cSharpArray->get_Length());
-    for (int value : ArrayW<int>(cSharpArray.ptr()))
+    // We can access the raw value again with ptr(), or access methods with ->
+    logger.info("Array length: {}", cSharpArray->size());
+    for (int value : cSharpArray.ptr())
         logger.info("Array value: {}", value);
 }
 ```
 
-As mentioned, Unity objects do not use the GC, and therefore should not be used in a `SafePtr`. However, there is a subtlety
-that allows for the existence of a `SafePtrUnity`. _This type does not prevent the object from being destroyed._ Instead,
-all it does is keep specifically the C# wrapper of the Unity object alive, allowing you to do null checks on it safely.
+As mentioned, Unity objects do not use the GC, and therefore cannot be used the same way in a `safe_ptr`. However, there is a
+subtlety that allows the type to be somewhat useful. _`safe_ptr`s do not prevent Unity objects from being destroyed._ Instead,
+all they do is keep specifically the C# wrapper of the Unity object alive, allowing you to do null checks on it safely.
 
 ```cpp
-SafePtrUnity<UnityEngine::GameObject> toggleObject;
+safe_ptr<UnityEngine::GameObject*> toggleObject;
 
 void CreateToggleObject() {
     toggleObject = UnityEngine::GameObject::New_ctor("ToggleObject");
@@ -76,20 +78,21 @@ void CreateToggleObject() {
 
 void UseToggleObjectLater() {
     if (toggleObject)
-        toggleObject->SetActive(!toggleObject->activeSelf);
+        toggleObject.ptr()->SetActive(!toggleObject->activeSelf);
     else
         logger.warn("ToggleObject is destroyed, cannot use it");
 }
 ```
 
 ::: tip
-Part of the features of `SafePtrUnity` are also provided by the wrapper type `UnityW`. It provides the same null check,
-but does not keep the C# reference to the object alive.
+The wrapper type `UnityW` can also be used to null check Unity objects, but it does not keep the C# reference to the
+object alive.
 :::
 
 ::: warning
-If you have a `SafePtrUnity` or `UnityW` that may be null, and you want to get the raw pointer anyway, make sure to use
-`unsafePtr()` instead of `ptr()`. Otherwise, an exception will be thrown if the object is null.
+If you have a `safe_ptr` or `UnityW` that may be null, and you want to get the raw pointer anyway, make sure to use
+`unchecked_ptr()` and `unsafe_ptr()` respectively instead of `ptr()`. Otherwise, an exception will be thrown if the object
+is null.
 :::
 
 ### Custom Types
@@ -97,7 +100,7 @@ If you have a `SafePtrUnity` or `UnityW` that may be null, and you want to get t
 The other way of making the GC aware of object references is through [custom types](./custom-types.md). All fields
 declared with `DECLARE_INSTANCE_FIELD` in a custom type will be safe for the lifetime of that custom type, allowing the
 easy use of C# objects in them. They could also potentially be used as a way of keeping a large number of objects alive
-more efficiently than having a `SafePtr` for each one.
+more efficiently than having a `safe_ptr` for each one.
 
 ## Internal Calls
 
@@ -108,29 +111,38 @@ scripts but also from Unity.
 In some cases, you can easily implement these stripped methods yourself, by copying the implementation from a [decompiler](./decompiling.md).
 However, in other cases, part of the method may involve something known as an icall, or internal call.
 
-<!-- TODO picture of icall in ilspy -->
+![Templatr Example](/.assets/images/modding/quest-mod-icall-dnspy.png)
 
 An icall is a call to the core Unity runtime, closed source and written in C++, so effectively non-decompilable. However,
 as part of the mod install process on quest, the core Unity runtime is replaced with an "unstripped" version. This only
 restores the methods in Unity's internals, not the C# scripts, but it's enough for mods to run those internal calls themselves.
 
-For this example, we'll use the AssetBundle method from above. To run it, we'll need to find use the namespace, class,
+For this example, we'll use the Microphone method from above. To run it, we'll need to find use the namespace, class,
 and method names to find its identifier, then use the `resolve_icall` method from `beatsaber-hook` to get a
 reference to the method before actually running it.
 
 ```cpp
-// Header for the resolve_icall function. Other used classes must also be included like always
-#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+// Header for the resolve_icall function
+#include "beatsaber-hook/shared/api.hpp"
+// Other used classes must also be included like always
+#include "beatsaber-hook/shared/byref.hpp"
+#include "beatsaber-hook/shared/stringw.hpp"
 
-UnityEngine::AssetBundleCreateRequest* LoadAsset(std::string file) {
+#include "UnityEngine/Bindings/ManagedSpanWrapper.hpp"
+
+int GetMicrophoneDeviceID(std::string name) {
     // References to icalls are valid for the runtime of the game, so we can cache it as a static variable
     // The template parameters are the return type followed by the arguments, all as C# types
     // If the method is not static, an extra first parameter of the object pointer is added, just like in hooks
     // The identifier is the namespace and class name separated by a period, followed by :: then the method name
-    static auto LoadFromFileAsync =
-        il2cpp_utils::resolve_icall<UnityEngine::AssetBundleCreateRequest*, StringW, uint, u_long>("UnityEngine.AssetBundle::LoadFromFileAsync_Internal");
-    // Now we can just run the method
-    return LoadFromFileAsync(file, 0, 0);
+    static auto GetMicrophoneDeviceIDFromName =
+        i2c::resolve_icall<int, by_ref<UnityEngine::Bindings::ManagedSpanWrapper>>(
+            "UnityEngine.Microphone::GetMicrophoneDeviceIDFromName_Injected"
+        ).value();
+    // Now we can just run the method (with a little annoyance from it taking a ref ManagedSpanWrapper)
+    StringW cSharpName = name;
+    UnityEngine::Bindings::ManagedSpanWrapper wrapper = {cSharpName.begin(), static_cast<int>(cSharpName.size())};
+    return GetMicrophoneDeviceIDFromName(by_ref(wrapper));
 }
 ```
 

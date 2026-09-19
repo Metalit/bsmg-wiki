@@ -66,7 +66,7 @@ for your own types using a simple `fmt` API.
 ```cpp
 enum class Number { Zero, One, Two };
 
-// Provides formatting for Number
+// Provides formatting for Number (must be in the same namespace)
 auto format_as(Number num) {
     return (int) num;
 }
@@ -115,8 +115,12 @@ purposes, but you obviously won't be able to have your mod running.
 ## Emulators
 
 Setting up an emulator is a relatively new devlopment, and as such remains a somewhat involved process. However, it can
-be incredibly useful, since testing mods on the physical device only can cause many inconveniences, such as having to put
+be incredibly useful, since testing mods on the physical device only can have its inconveniences, such as having to put
 on the headset every time you make a change in QRUE.
+
+::: danger
+Emulators are currently not working for the latest versions of Beat Saber.
+:::
 
 ### Installing
 

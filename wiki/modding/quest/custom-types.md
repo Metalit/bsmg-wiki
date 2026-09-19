@@ -131,8 +131,6 @@ This method should be put in your `load()` or `late_load()` like so:
 // Counter.hpp does not have to be included
 
 extern "C" void late_load() {
-    // Make sure to run this first
-    il2cpp_functions::Init();
     custom_types::Register::AutoRegister();
     // Install hooks after running AutoRegister
 }
@@ -178,7 +176,7 @@ void CreateSimpleExample() {
 ```
 
 ::: danger
-Do not run `ctor` yourself or use the `new` keyword on custom types. Only create them with `New_ctor`, `il2cpp_utils::New`,
+Do not run `ctor` yourself or use the `new` keyword on custom types. Only create them with `New_ctor`, `i2c::new_ctor`,
 or a C# method that creates an object such as `AddComponent`.
 :::
 

@@ -127,7 +127,7 @@ MAKE_HOOK_MATCH(
     UnityEngine::GameObject* gameObject = actionButton->gameObject;
     HMUI::CurvedTextMeshPro* actionButtonText = gameObject->GetComponentInChildren<HMUI::CurvedTextMeshPro*>();
 
-    // Set the text to "Skill Issue"
+    // Set the text to "Skill Issue".
     actionButtonText->text = "Skill Issue";
 }
 ```
@@ -136,8 +136,6 @@ Next, you have to install your hook. Usually, hooks are installed in `load()` or
 
 ```cpp
 extern "C" void late_load() {
-    il2cpp_functions::Init();
-
     logger.info("Installing hooks...");
     INSTALL_HOOK(logger, StandardLevelDetailViewController_DidActivate);
     logger.info("Installed all hooks!");

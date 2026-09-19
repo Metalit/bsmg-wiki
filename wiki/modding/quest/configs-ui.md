@@ -11,8 +11,8 @@ the basics of using `config-utils` to create a settings menu for your mod.
 
 ## Defining the Config
 
-First, install `config-utils` by running `qpm dependency add config-utils` in your project directory. Make sure to restore
-after adding the dependency.
+First, install `config-utils` by running `qpm dependency add config-utils` and `qpm dependency add reflectcpp` in your project
+directory. Make sure to restore after adding the dependencies.
 
 To create the config, make a header file with the following contents.
 
@@ -86,7 +86,6 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
 }
 
 extern "C" void late_load() {
-    il2cpp_functions::Init();
     BSML::Init();
     // Parameters: (title, method, show ok/cancel buttons)
     BSML::Register::RegisterSettingsMenu("My Mod", DidActivate, false);

@@ -6,15 +6,46 @@ description: Store whatever data you want, local to your mod.
 
 # Advanced Data Storage
 
-## Rapidjson-Macros
+## JSON
+
+### ReflectCPP
+
+[reflect-cpp](https://github.com/getml/reflect-cpp) is a reflection-based C++ library that automatically generates JSON
+parsing and serialization for plain C-style structs.
+
+To install, run `qpm dependency add reflectcpp` and `qpm restore`. See [its own docs](https://rfl.getml.com/) for usage.
+
+It also integrates into `config-utils` (see the [last page](./configs-ui.md)). If a struct is supported by `reflect-cpp`,
+it can be used directly in a config:
+
+```cpp
+struct ControllerButton {
+    int Button;
+    int Controller;
+};
+
+struct ButtonSettings {
+    ControllerButton MainActionButton;
+    std::vector<ControllerButton> OtherActionButtons;
+};
+
+DECLARE_CONFIG(Config) {
+    CONFIG_VALUE(Buttons, ButtonSettings, "Button Settings", {});
+    CONFIG_VALUE(OtherSetting, std::string, "Other Setting", "");
+};
+```
+
+Configurations are always parsed with the [`rfl::DefaultIfMissing`](https://rfl.getml.com/processors/#rfldefaultifmissing)
+processor.
+
+### Rapidjson-Macros
 
 ::: warning
-This library may be deprecated in future game versions, in favor of [reflect-cpp](https://github.com/getml/reflect-cpp).
-It will remain available for use on QPM.
+This library is deprecated, but still available for use on QPM.
 :::
 
 For storing more complicated values and structures, the `rapidjson-macros` package allows you to easily read and write
-from JSON, and can integrated directly into `config-utils` configs if desired.
+from JSON.
 
 To start, you can define an object with the `DECLARE_JSON_STRUCT` and `VALUE` macros.
 
@@ -45,7 +76,7 @@ with a message describing the error and its location in the parsed object. You c
 
 ::: tip
 While you can use normal C++ (or C) methods of reading and writing files, `beatsaber-hook` also provides the simple
-functions `readfile`, `writefile`, `fileexists`, and a few more in `beatsaber-hook/shared/utils/utils-functions.h`.
+functions `readfile`, `writefile`, `fileexists`, and a few more in `beatsaber-hook/shared/utils.hpp`.
 :::
 
 Types can also be nested, allowing for more complicated JSON structures and reuse.
@@ -82,25 +113,24 @@ with `DECLARE_JSON_STRUCT`, but have custom behavior.
 
 While mods can access most non-restricted folders and files on the Quest, the convention for storing configs and data
 files is to use the `ModData` folder. This is used over the standard application directory because files in it will
-persist across game reinstalls for updates (allowing for mods such as PlayerDataKeeper), and are also accessible from
+persist across game reinstalls for updates (making mods such as PlayerDataKeeper possible), and are also accessible from
 file managers.
 
 `config-utils`, as covered in the [last page](./configs-ui.md), will handle reading and writing to the config file path
-for you. If you need to access the path yourself anyway, you can use `Configuration::getConfigFilePath` with
-your mod info.
+for you. If you need to access the path yourself anyway, you can use `get_config_path` with your mod info or mod ID.
 
-To access the data directory, the function `getDataDir` will use your mod info or mod ID to generate the path for your mod.
+To access the data directory, the function `get_data_dir` will use your mod info or mod ID to generate the path for your mod.
 It will not create the directory for you, so you may need to check if it exists.
 
 ```cpp
-#include "beatsaber-hook/shared/config/config-utils.hpp"
+#include "beatsaber-hook/shared/utils.hpp"
 
 std::string GetConfigPath() {
-    return Configuration::getConfigFilePath(modInfo);
+    return get_config_path(modInfo);
 }
 
 std::string GetDataPath() {
-    return getDataDir(modInfo);
+    return get_data_dir(modInfo);
 }
 ```
 

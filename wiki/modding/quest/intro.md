@@ -68,19 +68,22 @@ and add it to your `PATH` variable.
 
 ### Android NDK
 
-Download the Andoid NDK via QPM using `qpm ndk download 28`, and add the extracted directory to a new environment
-variable called `ANDROID_NDK_HOME`. You can also run `qpm ndk pin 28` in a project directory to only apply the NDK,
+Download the Andoid NDK via QPM using `qpm ndk download 29`, and add the extracted directory to a new environment
+variable called `ANDROID_NDK_HOME`. You can also run `qpm ndk pin 29` in a project directory to only apply the NDK,
 with that specific version, in the current project.
 
 Alternatively, you can download the NDK manually from the [Android NDK Downloads page](https://developer.android.com/ndk/downloads)
 and set the `ANDROID_NDK_HOME` environment variable to the root of its extracted files.
 
+::: warning
+Make sure the full path to your NDK does not have any spaces in it. If you used QPM to download the NDK, this means
+that your username must not have any spaces in it.
+:::
+
 ## Create a Project
 
 Once you have setup your environment, you can now begin making your mod. This guide uses [Metalit's template](https://github.com/Metalit/quest-mod-template).
 To start out using the template, run the following command in the terminal.
-
-<!-- TODO actually make template -->
 
 ```sh
 qpm templatr --git https://github.com/Metalit/quest-mod-template.git <destination>
@@ -90,12 +93,14 @@ Templatr will then ask a series of questions to create a mod project.
 
 ![Templatr Example](/.assets/images/modding/quest-mod-template-example.png)
 
-<!-- TODO update above image -->
-
 Before you can start working on the project, you must restore all of the dependencies. Consider this step similar to
 fully initializing the project.
 
-<!-- TODO tip on symlinks -->
+::: tip
+By default, QPM will attempt to use symlinks for restored dependencies to save storage space. On Windows, non-administrator
+users are only able to create symlinks if [Windows developer mode](https://learn.microsoft.com/en-us/windows/advanced-settings/developer-mode)
+is enabled. The feature can also be disabled in QPM with the command `qpm config symlink disable`.
+:::
 
 In a terminal in the project directory, run:
 

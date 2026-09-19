@@ -161,9 +161,9 @@ void CreateUI(UnityEngine::Transform* parent) {
 <!-- TODO picture -->
 
 ::: tip
-While BSML Lite doesn't have any sort of hot reload feature, [Quest RUE](./testing.md#quest-rue)
-can be very effectively used to modify positions or debug layout issues. It's not very useful for significant hierarchy
-changes or the creation of new elements, however.
+While BSML Lite doesn't have any sort of hot reload feature, [Quest RUE](./testing.md#quest-rue) can be very effectively
+used to modify positions or debug layout issues. It's not currently very useful for significant hierarchy changes or the
+creation of new elements, however.
 :::
 
 ::: tip
@@ -388,7 +388,7 @@ the `BSML_DATACACHE` macro.
 BSML_DATACACHE(ButtonIcon) {
     // Again, reading from a file is an example, using asset include is generally recommended
     auto data = readbytes("button_icon.png");
-    return ArrayW<uint8_t>({(uint8_t*) data.data(), data.size()});
+    return ArrayW<uint8_t>({reinterpret_cast<uint8_t*>(data.data()), data.size()});
 }
 ```
 
